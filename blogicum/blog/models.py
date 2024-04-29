@@ -25,9 +25,9 @@ class Category(BaseModel):
     slug = models.SlugField(
         unique=True,
         verbose_name='Идентификатор',
-        help_text='Идентификатор страницы для URL; разрешены символы латиницы, цифры, дефис и подчёркивание.'
+        help_text='Идентификатор страницы для URL;'
+                  ' разрешены символы латиницы, цифры, дефис и подчёркивание.'
     )
-
 
     def __str__(self):
         return self.title
@@ -39,7 +39,6 @@ class Category(BaseModel):
 
 class Location(BaseModel):
     name = models.CharField(max_length=256, verbose_name='Название места')
-
 
     def __str__(self):
         return self.name
@@ -61,15 +60,13 @@ class Post(BaseModel):
         User, on_delete=models.CASCADE, verbose_name='Автор публикации')
     location = models.ForeignKey(
         Location, on_delete=models.SET_NULL,
-        null=True, verbose_name= 'Местоположение')
+        null=True, verbose_name='Местоположение')
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL,
         null=True, verbose_name='Категория')
 
-
     def __str__(self):
         return self.title
-
 
     class Meta:
         verbose_name = 'публикация'

@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from django.utils import timezone
 from blog.models import Post, Location, Category
 
-post_list = list(Post.objects.values('id', 'title', 'text', 'location', 'category'))
+post_list = list(Post.objects.values(
+'id', 'title', 'text', 'location', 'category'))
+
 for post in post_list:
     location_id = post['location']
     category_id = post['category']
