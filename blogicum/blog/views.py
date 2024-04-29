@@ -1,17 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from blog.models import Post, Location, Category
-
-post_list = list(Post.objects.values(
-    'id', 'title', 'text', 'location', 'category'))
-
-for post in post_list:
-    location_id = post['location']
-    category_id = post['category']
-    location = Location.objects.get(pk=location_id)
-    category = Category.objects.get(pk=category_id)
-    post['location'], post['category'] = location, category
-
+from blog.models import Post, Category
 
 def index(request):
     post_list = Post.objects.filter(
@@ -23,7 +12,6 @@ def index(request):
     template = 'blog/index.html'
     context = {'post_list': post_list}
     return render(request, template, context)
-
 
 def post_detail(request, id):
     post = get_object_or_404(
@@ -37,9 +25,13 @@ def post_detail(request, id):
     context = {'post': post}
     return render(request, template, context)
 
-
 def category_posts(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug, is_published=True)
+    post_list = category.post_set.filter(
+        is_published=True,
+        pub_date__lte=timezone.now()
+    )
+
     template = 'blog/category.html'
-    category = get_object_or_404(Category, pk=category_slug)
-    context = {'category': category}
+    context = {'category': category, 'post_list': post_list}
     return render(request, template, context)
