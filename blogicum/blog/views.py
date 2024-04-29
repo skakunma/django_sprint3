@@ -3,7 +3,7 @@ from django.utils import timezone
 from blog.models import Post, Location, Category
 
 post_list = list(Post.objects.values(
-'id', 'title', 'text', 'location', 'category'))
+    'id', 'title', 'text', 'location', 'category'))
 
 for post in post_list:
     location_id = post['location']
